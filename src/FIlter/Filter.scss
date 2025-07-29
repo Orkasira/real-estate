@@ -1,0 +1,175 @@
+.filter-container {
+  margin: 77px 162px 32px 162px;
+  .filter-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .filter-items {
+      display: flex;
+      border: 1px solid #dbdbdb;
+      border-radius: 10px;
+      padding: 14px 20px;
+      gap: 55px;
+      .filter-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+      }
+    }
+    .btns {
+      display: flex;
+      gap: 16px;
+      .btn {
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .list {
+        background-color: #f93b1d;
+        color: #fff;
+      }
+      .agent {
+        background-color: #fff;
+        color: #f93b1d;
+        border: 1px solid #f93b1d;
+      }
+    }
+  }
+}
+
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #02152657;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  display: none;
+}
+
+.add-agent {
+  display: none;
+  width: 799px;
+  height: 610px;
+  background-color: white;
+  position: absolute;
+  top: 9%;
+  left: 25%;
+  z-index: 20;
+  border-radius: 10px;
+  padding: 87px 105px;
+  .title {
+    text-align: center;
+    font-size: 32px;
+    color: #021526;
+  }
+  .form {
+    margin-top: 61px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    .fullname {
+      display: flex;
+      justify-content: space-between;
+    }
+    .mail-tel {
+      display: flex;
+      justify-content: space-between;
+    }
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #021526;
+      }
+      input {
+        width: 384px;
+        height: 42px;
+        border-radius: 6px;
+        border: 1px solid #808a93;
+      }
+    }
+    .photos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .custom-file-upload {
+        border: 2px dashed #2d3648;
+        border-radius: 8px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        .plus {
+          color: #2d3648;
+          font-size: 26px;
+          font-weight: 100;
+        }
+        .image-preview-wrapper {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .image-preview {
+            width: 92px;
+            height: 82px;
+            object-fit: cover;
+            border-radius: 4px;
+          }
+          .remove-image-btn {
+            background: #fff;
+            border: 1px solid #021526;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: -12px;
+            top: 60px;
+            cursor: pointer;
+            transition: transform 0.1s;
+          }
+          .remove-image-btn:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+  .agent-btns {
+    display: flex;
+    gap: 15px;
+    left: 69%;
+    top: 16%;
+    position: relative;
+    .in-agent {
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+    .agent-remove-btn {
+      background-color: #ffffff;
+      color: #f93b1d;
+      border: 1px solid #f93b1d;
+    }
+    .agent-add-btn {
+      background-color: #f93b1d;
+      color: white;
+    }
+  }
+}
