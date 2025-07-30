@@ -1,13 +1,14 @@
 import logo from "../assets/logo.png";
 import "./Header.css";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
     <>
       <header>
-        <a href="#">
+        <Link to="/Main">
           <img src={logo} alt="logo" />
-        </a>
+        </Link>
       </header>
     </>
   );

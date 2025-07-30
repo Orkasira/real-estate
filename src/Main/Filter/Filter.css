@@ -35,11 +35,22 @@
 .filter-container .filter-content .btns .list {
   background-color: #f93b1d;
   color: #fff;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.filter-container .filter-content .btns .list:hover {
+  background-color: #95210f;
 }
 .filter-container .filter-content .btns .agent {
   background-color: #fff;
   color: #f93b1d;
   border: 1px solid #f93b1d;
+  transition: 0.3s;
+}
+.filter-container .filter-content .btns .agent:hover {
+  background-color: #ff4e33;
+  color: white;
+  border: 1px solid #ff4e33;
 }
 
 .blur-overlay {

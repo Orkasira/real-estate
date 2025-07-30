@@ -32,11 +32,22 @@
       .list {
         background-color: #f93b1d;
         color: #fff;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+      .list:hover {
+        background-color: #95210f;
       }
       .agent {
         background-color: #fff;
         color: #f93b1d;
         border: 1px solid #f93b1d;
+        transition: 0.3s;
+      }
+      .agent:hover {
+        background-color: #ff4e33;
+        color: white;
+        border: 1px solid #ff4e33;
       }
     }
   }

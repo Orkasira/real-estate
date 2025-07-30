@@ -1,10 +1,11 @@
 import "./Filter.css";
-import arrow from "../assets/shape.png";
+import arrow from "../../assets/shape.png";
 import React, { useState, useRef, useEffect } from "react";
 import "@fontsource/firago/500.css";
-import trash from "../assets/trash-2.png";
+import trash from "../../assets/trash-2.png";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Filter() {
   // const [selectedFilter, setSelectedFilter] = useState(null);
@@ -14,6 +15,7 @@ function Filter() {
   const removeBtnRef = useRef(null);
   const blurOverlayRef = useRef(null);
   const [posts, setPosts] = useState([]);
+  const [activeInput, setActiveInput] = useState(null);
 
   //  img add and remove in agent
   const handleFileChange = (e) => {
@@ -69,6 +71,7 @@ function Filter() {
   const firstNameValue = watch("firstName");
   const lastNameValue = watch("lastName");
   const EmailValue = watch("Email");
+  const telNumValue = watch("telNum");
 
   useEffect(() => {
     trigger();
@@ -145,7 +148,9 @@ function Filter() {
             </div>
           </div>
           <div className="btns">
-            <button className="list btn">+ ლისტინგის დამატება</button>
+            <Link to="/Addlist" className="list btn">
+              + ლისტინგის დამატება
+            </Link>
             <button className="agent btn" ref={agentBtnRef} onClick={agent}>
               + აგენტის დამატება
             </button>
@@ -169,20 +174,43 @@ function Filter() {
               <input
                 type="text"
                 id="firstName"
+                placeholder="სახელი"
                 {...register("firstName", {
                   required: "✓ მინიმუმ ორი სიმბოლო",
                   minLength: {
                     value: 2,
-                    message: "✓ მინიმუმ ორი სიმბოლო",
+                    message: "✓ ჩაწერეთ ვალიდური მონაცემები",
                   },
                 })}
+                onFocus={() => setActiveInput("firstName")}
+                onBlur={() => setActiveInput(null)}
+                style={{
+                  border:
+                    firstNameValue.length === 0
+                      ? "1.5px solid #021526"
+                      : errors.firstName
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
+                  outline:
+                    activeInput === "firstName"
+                      ? firstNameValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errors.firstName
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
+                      : "none",
+                  padding: "2px",
+                }}
               />
-              {errors.firstName ? (
-                <p style={{ color: "#021526" }}>{errors.firstName.message}</p>
+
+              {firstNameValue.length === 0 ? (
+                <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
+              ) : errors.firstName ? (
+                <p style={{ color: "#F93B1D" }}>
+                  ✓ ჩაწერეთ ვალიდური მონაცემები
+                </p>
               ) : (
-                firstNameValue.length >= 2 && (
-                  <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
-                )
+                <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
               )}
             </div>
             <div className="inputs">
@@ -190,20 +218,43 @@ function Filter() {
               <input
                 type="text"
                 id="lastName"
+                placeholder="სახელი"
                 {...register("lastName", {
                   required: "✓ მინიმუმ ორი სიმბოლო",
                   minLength: {
                     value: 2,
-                    message: "✓ მინიმუმ ორი სიმბოლო",
+                    message: "✓ ჩაწერეთ ვალიდური მონაცემები",
                   },
                 })}
+                onFocus={() => setActiveInput("lastName")}
+                onBlur={() => setActiveInput(null)}
+                style={{
+                  border:
+                    lastNameValue.length === 0
+                      ? "1.5px solid #021526"
+                      : errors.lastName
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
+                  outline:
+                    activeInput === "lastName"
+                      ? lastNameValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errors.lastName
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
+                      : "none",
+                  padding: "2px",
+                }}
               />
-              {errors.lastName ? (
-                <p style={{ color: "#021526" }}>{errors.lastName.message}</p>
+
+              {lastNameValue.length === 0 ? (
+                <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
+              ) : errors.lastName ? (
+                <p style={{ color: "#F93B1D" }}>
+                  ✓ ჩაწერეთ ვალიდური მონაცემები
+                </p>
               ) : (
-                lastNameValue.length >= 2 && (
-                  <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
-                )
+                <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
               )}
             </div>
           </div>
@@ -213,21 +264,46 @@ function Filter() {
               <input
                 type="email"
                 id="Email"
+                placeholder="ელ-ფოსტა"
                 {...register("Email", {
                   required: "✓ გამოიყენეთ @redberry.ge ფოსტა",
                   validate: (value) =>
                     value.endsWith("@redberry.ge") ||
-                    "✓ გამოიყენეთ @redberry.ge ფოსტა",
+                    "✓ ჩაწერეთ ვალიდური მონაცემები",
                 })}
+                onFocus={() => setActiveInput("Email")}
+                onBlur={() => setActiveInput(null)}
+                style={{
+                  border:
+                    EmailValue.length === 0
+                      ? "1.5px solid #021526"
+                      : errors.Email
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
+                  outline:
+                    activeInput === "Email"
+                      ? EmailValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errors.Email
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
+                      : "none",
+                  padding: "2px",
+                }}
               />
-              {errors.Email ? (
-                <p style={{ color: "#021526" }}>{errors.Email.message}</p>
+
+              {EmailValue.length === 0 ? (
+                <p style={{ color: "#021526" }}>
+                  ✓ გამოიყენეთ @redberry.ge ფოსტა
+                </p>
+              ) : errors.Email ? (
+                <p style={{ color: "#F93B1D" }}>
+                  ✓ ჩაწერეთ ვალიდური მონაცემები
+                </p>
               ) : (
-                EmailValue.endsWith("@redberry.ge") && (
-                  <p style={{ color: "green" }}>
-                    ✓ გამოიყენეთ @redberry.ge ფოსტა
-                  </p>
-                )
+                <p style={{ color: "green" }}>
+                  ✓ გამოიყენეთ @redberry.ge ფოსტა
+                </p>
               )}
             </div>
             <div className="inputs">
@@ -235,24 +311,45 @@ function Filter() {
               <input
                 type="text"
                 id="telNum"
+                placeholder="ტელეფონის ნომერი"
                 {...register("telNum", {
                   required: "✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით",
                   pattern: {
                     value: /^5\d{8}$/,
-                    message: "✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით",
+                    message: "✓ ჩაწერეთ ვალიდური მონაცემები",
                   },
                 })}
+                onFocus={() => setActiveInput("telNum")}
+                onBlur={() => setActiveInput(null)}
+                style={{
+                  border:
+                    telNumValue.length === 0
+                      ? "1.5px solid #021526"
+                      : errors.telNum
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
+                  outline:
+                    activeInput === "telNum"
+                      ? telNumValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errors.telNum
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
+                      : "none",
+                  padding: "2px",
+                  borderRadius: "6px",
+                  fontSize: "16px",
+                }}
               />
-              {errors.telNum ? (
-                <p style={{ color: "#021526", width: "386px" }}>
-                  {errors.telNum.message}
+
+              {telNumValue.length === 0 ? (
+                <p style={{ color: "#021526" }}>
+                  ✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით
                 </p>
+              ) : errors.telNum ? (
+                <p style={{ color: "#F93B1D" }}>{errors.telNum.message}</p>
               ) : (
-                watch("telNum") && (
-                  <p style={{ color: "green", width: "386px" }}>
-                    ✓ ფორმატი სწორია
-                  </p>
-                )
+                <p style={{ color: "green" }}>✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით</p>
               )}
             </div>
           </div>
@@ -275,7 +372,12 @@ function Filter() {
                 />
               </label>
             ) : (
-              <div className="custom-file-upload">
+              <div
+                className="custom-file-upload"
+                style={{
+                  border: imageUrl ? "2px dashed green" : "2px dashed #021526",
+                }}
+              >
                 <div className="image-preview-wrapper">
                   <img src={imageUrl} alt="preview" className="image-preview" />
                   <button
