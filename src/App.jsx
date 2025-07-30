@@ -1,4 +1,4 @@
-import Filter from "./FIlter/FIlter.jsx";
+import Filter from "./Filter/Filter.jsx";
 import Header from "./header/Header.jsx";
 
 function App() {
