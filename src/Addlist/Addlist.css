@@ -1,1 +1,78 @@
-/*# sourceMappingURL=Addlist.css.map */
+@charset "UTF-8";
+.add-list-container {
+  padding: 64px 565px;
+}
+.add-list-container .title {
+  text-align: center;
+}
+.add-list-container .form-container {
+  margin-top: 70px;
+}
+.add-list-container .form-container .sell-rent-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.add-list-container .form-container .sell-rent-content .radio-container {
+  display: flex;
+  gap: 60px;
+}
+.add-list-container .form-container .sell-rent-content .radio-container .radio-content {
+  display: flex;
+  gap: 10px;
+}
+.add-list-container .form-container .sell-rent-content .radio-container .radio-content input {
+  accent-color: black; /* ნებისმიერი ფერი */
+  width: 17px;
+  height: 17px;
+}
+.add-list-container .placement-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 80px;
+}
+.add-list-container .placement-container h3 {
+  font-weight: 400;
+  font-size: 16px;
+}
+.add-list-container .placement-container .placement-content {
+  display: flex;
+  gap: 20px;
+}
+.add-list-container .placement-container .placement-content .placement-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.add-list-container .placement-container .placement-content .placement-item label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #021526;
+}
+.add-list-container .placement-container .placement-content .placement-item input {
+  width: 384px;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid #808a93;
+}
+.add-list-container .placement-container .region-city-container {
+  display: flex;
+  gap: 20px;
+}
+.add-list-container .placement-container .region-city-container .region-city-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.add-list-container .placement-container .region-city-container .region-city-content label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #021526;
+}
+.add-list-container .placement-container .region-city-container .region-city-content select {
+  width: 384px;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid #808a93;
+}/*# sourceMappingURL=Addlist.css.map */

@@ -7,6 +7,16 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+const TOKEN = "9f837d22-ede4-4824-8330-981f2b4beadf";
+export const instance = axios.create({
+  baseURL: "https://api.real-estate-manager.redberryinternship.ge/api",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${TOKEN}`,
+  },
+});
+
 function Filter() {
   // const [selectedFilter, setSelectedFilter] = useState(null);
   const [image, setImage] = useState(null);
@@ -78,17 +88,6 @@ function Filter() {
   }, []);
 
   // axios api
-
-  const TOKEN = "9f837d22-ede4-4824-8330-981f2b4beadf";
-
-  const instance = axios.create({
-    baseURL: "https://api.real-estate-manager.redberryinternship.ge/api",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
-    },
-  });
 
   const getPosts = async () => {
     try {
