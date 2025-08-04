@@ -1,4 +1,4 @@
-import Header from "./Header/Header.jsx";
+import Header from "./Header/header.jsx";
 import { Route, Routes } from "react-router";
 import Main from "./Main/Main.jsx";
 import Listpage from "./Listpage/Listpage.jsx";

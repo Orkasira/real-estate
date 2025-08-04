@@ -1,5 +1,5 @@
 import "./Addlist.css";
-import { instance } from "../Main/FIlter/FIlter";
+import { instance } from "../Main/Filter/Filter";
 import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import trash from "../assets/trash-2.png";
