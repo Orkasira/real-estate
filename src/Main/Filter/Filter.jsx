@@ -1,5 +1,5 @@
 import "./Filter.css";
-import arrow from "../../assets/shape.png";
+import arrow from "../../assets/Shape.png";
 import React, { useState, useRef, useEffect } from "react";
 import "@fontsource/firago/500.css";
 import trash from "../../assets/trash-2.png";
