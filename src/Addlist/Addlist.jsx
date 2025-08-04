@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import trash from "../assets/trash-2.png";
 import plusCircle from "../assets/plus-circle.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Addlist() {
   const [regions, setRegions] = useState([]);
@@ -15,6 +16,7 @@ function Addlist() {
   const removeBtnRef = useRef(null);
   const blurOverlayRef = useRef(null);
   const [activeInput, setActiveInput] = useState(null);
+  const [agents, setAgents] = useState([]);
 
   // agent form validation
   const {
@@ -33,7 +35,14 @@ function Addlist() {
     },
   });
 
-  const onSubmit = async (data) => console.log(data);
+  const onSubmit = async (formData) => {
+    try {
+      await addAgent(formData); // აგენტის დამატება სერვერზე
+      await fetchAgents(); // სიის განახლება სერვერიდან, თუ გინდა სერვერიდან ახალი ჩამოტვირთვა
+    } catch (error) {
+      console.error("Agent add failed", error);
+    }
+  };
 
   const firstNameValue = watch("firstName");
   const lastNameValue = watch("lastName");
@@ -119,6 +128,42 @@ function Addlist() {
     removeBtnRef.current.style.display = "none";
     blurOverlayRef.current.style.display = "none";
   }
+
+  // axios api
+
+  const fetchAgents = async () => {
+    try {
+      const response = await instance.get("/agents");
+      console.log("AGENT DATA:", response.data); // ← აქ დააკონსოლე
+      setAgents(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAgents();
+  }, []);
+
+  const addAgent = async (newAgentData) => {
+    try {
+      const formData = new FormData();
+      formData.append("first_name", newAgentData.firstName);
+      formData.append("last_name", newAgentData.lastName);
+      formData.append("email", newAgentData.Email);
+      formData.append("phone", newAgentData.telNum);
+      formData.append("avatar", image); // image useState-დან
+
+      await instance.post("/agents", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      await fetchAgents(); // select ავტომატურად განახლდეს
+      remove(); // modal დახურვა
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -249,8 +294,21 @@ function Addlist() {
             <h3>აგენტი</h3>
             <p>აირჩიე</p>
             <div className="agent-select-box">
-              <select>
+              <select {...register("agent_id")}>
                 <option value="">აირჩიე</option>
+
+                {Array.isArray(agents) && agents.length > 0 ? (
+                  agents.map((agent) => {
+                    console.log(agent); // ← ეს აქ ჩასვი
+                    return (
+                      <option key={agent.id} value={agent.id}>
+                        {agent.name} {agent.surname}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option disabled>აგენტები არ არის</option>
+                )}
               </select>
             </div>
             <div className="add-agent-btn">
@@ -264,259 +322,250 @@ function Addlist() {
               ></div>
               <div className="add-agent" ref={removeBtnRef}>
                 <h2 className="title">აგენტის დამატება</h2>
-                <form className="form" onSubmit={handleSubmit(onSubmit)}>
-                  <div className="fullname">
-                    <div className="inputs">
-                      <label htmlFor="">სახელი *</label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        placeholder="სახელი"
-                        {...register("firstName", {
-                          required: "✓ მინიმუმ ორი სიმბოლო",
-                          minLength: {
-                            value: 2,
-                            message: "✓ ჩაწერეთ ვალიდური მონაცემები",
-                          },
-                        })}
-                        onFocus={() => setActiveInput("firstName")}
-                        onBlur={() => setActiveInput(null)}
-                        style={{
-                          border:
-                            firstNameValue.length === 0
+                <div className="fullname">
+                  <div className="inputs">
+                    <label htmlFor="">სახელი *</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      placeholder="სახელი"
+                      {...register("firstName", {
+                        required: "✓ მინიმუმ ორი სიმბოლო",
+                        minLength: {
+                          value: 2,
+                          message: "✓ ჩაწერეთ ვალიდური მონაცემები",
+                        },
+                      })}
+                      onFocus={() => setActiveInput("firstName")}
+                      onBlur={() => setActiveInput(null)}
+                      style={{
+                        border:
+                          firstNameValue.length === 0
+                            ? "1.5px solid #021526"
+                            : errors.firstName
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
+                        outline:
+                          activeInput === "firstName"
+                            ? firstNameValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.firstName
                               ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
-                          outline:
-                            activeInput === "firstName"
-                              ? firstNameValue.length === 0
-                                ? "1.5px solid #021526"
-                                : errors.firstName
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
-                              : "none",
-                          padding: "2px",
-                        }}
-                      />
+                              : "1.5px solid green"
+                            : "none",
+                        padding: "2px",
+                      }}
+                    />
 
-                      {firstNameValue.length === 0 ? (
-                        <p style={{ color: "#021526" }}>
-                          ✓ მინიმუმ ორი სიმბოლო
-                        </p>
-                      ) : errors.firstName ? (
-                        <p style={{ color: "#F93B1D" }}>
-                          ✓ ჩაწერეთ ვალიდური მონაცემები
-                        </p>
-                      ) : (
-                        <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
-                      )}
-                    </div>
-                    <div className="inputs">
-                      <label htmlFor="">გვარი</label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        placeholder="სახელი"
-                        {...register("lastName", {
-                          required: "✓ მინიმუმ ორი სიმბოლო",
-                          minLength: {
-                            value: 2,
-                            message: "✓ ჩაწერეთ ვალიდური მონაცემები",
-                          },
-                        })}
-                        onFocus={() => setActiveInput("lastName")}
-                        onBlur={() => setActiveInput(null)}
-                        style={{
-                          border:
-                            lastNameValue.length === 0
+                    {firstNameValue.length === 0 ? (
+                      <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
+                    ) : errors.firstName ? (
+                      <p style={{ color: "#F93B1D" }}>
+                        ✓ ჩაწერეთ ვალიდური მონაცემები
+                      </p>
+                    ) : (
+                      <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
+                    )}
+                  </div>
+                  <div className="inputs">
+                    <label htmlFor="">გვარი</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      placeholder="სახელი"
+                      {...register("lastName", {
+                        required: "✓ მინიმუმ ორი სიმბოლო",
+                        minLength: {
+                          value: 2,
+                          message: "✓ ჩაწერეთ ვალიდური მონაცემები",
+                        },
+                      })}
+                      onFocus={() => setActiveInput("lastName")}
+                      onBlur={() => setActiveInput(null)}
+                      style={{
+                        border:
+                          lastNameValue.length === 0
+                            ? "1.5px solid #021526"
+                            : errors.lastName
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
+                        outline:
+                          activeInput === "lastName"
+                            ? lastNameValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.lastName
                               ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
-                          outline:
-                            activeInput === "lastName"
-                              ? lastNameValue.length === 0
-                                ? "1.5px solid #021526"
-                                : errors.lastName
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
-                              : "none",
-                          padding: "2px",
-                        }}
-                      />
+                              : "1.5px solid green"
+                            : "none",
+                        padding: "2px",
+                      }}
+                    />
 
-                      {lastNameValue.length === 0 ? (
-                        <p style={{ color: "#021526" }}>
-                          ✓ მინიმუმ ორი სიმბოლო
-                        </p>
-                      ) : errors.lastName ? (
-                        <p style={{ color: "#F93B1D" }}>
-                          ✓ ჩაწერეთ ვალიდური მონაცემები
-                        </p>
-                      ) : (
-                        <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
-                      )}
-                    </div>
+                    {lastNameValue.length === 0 ? (
+                      <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
+                    ) : errors.lastName ? (
+                      <p style={{ color: "#F93B1D" }}>
+                        ✓ ჩაწერეთ ვალიდური მონაცემები
+                      </p>
+                    ) : (
+                      <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
+                    )}
                   </div>
-                  <div className="mail-tel">
-                    <div className="inputs">
-                      <label htmlFor="">ელ-ფოსტა*</label>
-                      <input
-                        type="email"
-                        id="Email"
-                        placeholder="ელ-ფოსტა"
-                        {...register("Email", {
-                          required: "✓ გამოიყენეთ @redberry.ge ფოსტა",
-                          validate: (value) =>
-                            value.endsWith("@redberry.ge") ||
-                            "✓ ჩაწერეთ ვალიდური მონაცემები",
-                        })}
-                        onFocus={() => setActiveInput("Email")}
-                        onBlur={() => setActiveInput(null)}
-                        style={{
-                          border:
-                            EmailValue.length === 0
+                </div>
+                <div className="mail-tel">
+                  <div className="inputs">
+                    <label htmlFor="">ელ-ფოსტა*</label>
+                    <input
+                      type="email"
+                      id="Email"
+                      placeholder="ელ-ფოსტა"
+                      {...register("Email", {
+                        required: "✓ გამოიყენეთ @redberry.ge ფოსტა",
+                        validate: (value) =>
+                          value.endsWith("@redberry.ge") ||
+                          "✓ ჩაწერეთ ვალიდური მონაცემები",
+                      })}
+                      onFocus={() => setActiveInput("Email")}
+                      onBlur={() => setActiveInput(null)}
+                      style={{
+                        border:
+                          EmailValue.length === 0
+                            ? "1.5px solid #021526"
+                            : errors.Email
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
+                        outline:
+                          activeInput === "Email"
+                            ? EmailValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.Email
                               ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
-                          outline:
-                            activeInput === "Email"
-                              ? EmailValue.length === 0
-                                ? "1.5px solid #021526"
-                                : errors.Email
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
-                              : "none",
-                          padding: "2px",
-                        }}
-                      />
+                              : "1.5px solid green"
+                            : "none",
+                        padding: "2px",
+                      }}
+                    />
 
-                      {EmailValue.length === 0 ? (
-                        <p style={{ color: "#021526" }}>
-                          ✓ გამოიყენეთ @redberry.ge ფოსტა
-                        </p>
-                      ) : errors.Email ? (
-                        <p style={{ color: "#F93B1D" }}>
-                          ✓ ჩაწერეთ ვალიდური მონაცემები
-                        </p>
-                      ) : (
-                        <p style={{ color: "green" }}>
-                          ✓ გამოიყენეთ @redberry.ge ფოსტა
-                        </p>
-                      )}
-                    </div>
-                    <div className="inputs">
-                      <label htmlFor="">ტელეფონის ნომერი</label>
-                      <input
-                        type="text"
-                        id="telNum"
-                        placeholder="ტელეფონის ნომერი"
-                        {...register("telNum", {
-                          required: "✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით",
-                          pattern: {
-                            value: /^5\d{8}$/,
-                            message: "✓ ჩაწერეთ ვალიდური მონაცემები",
-                          },
-                        })}
-                        onFocus={() => setActiveInput("telNum")}
-                        onBlur={() => setActiveInput(null)}
-                        style={{
-                          border:
-                            telNumValue.length === 0
+                    {EmailValue.length === 0 ? (
+                      <p style={{ color: "#021526" }}>
+                        ✓ გამოიყენეთ @redberry.ge ფოსტა
+                      </p>
+                    ) : errors.Email ? (
+                      <p style={{ color: "#F93B1D" }}>
+                        ✓ ჩაწერეთ ვალიდური მონაცემები
+                      </p>
+                    ) : (
+                      <p style={{ color: "green" }}>
+                        ✓ გამოიყენეთ @redberry.ge ფოსტა
+                      </p>
+                    )}
+                  </div>
+                  <div className="inputs">
+                    <label htmlFor="">ტელეფონის ნომერი</label>
+                    <input
+                      type="text"
+                      id="telNum"
+                      placeholder="ტელეფონის ნომერი"
+                      {...register("telNum", {
+                        required: "✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით",
+                        pattern: {
+                          value: /^5\d{8}$/,
+                          message: "✓ ჩაწერეთ ვალიდური მონაცემები",
+                        },
+                      })}
+                      onFocus={() => setActiveInput("telNum")}
+                      onBlur={() => setActiveInput(null)}
+                      style={{
+                        border:
+                          telNumValue.length === 0
+                            ? "1.5px solid #021526"
+                            : errors.telNum
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
+                        outline:
+                          activeInput === "telNum"
+                            ? telNumValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.telNum
                               ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
-                          outline:
-                            activeInput === "telNum"
-                              ? telNumValue.length === 0
-                                ? "1.5px solid #021526"
-                                : errors.telNum
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
-                              : "none",
-                          padding: "2px",
-                          borderRadius: "6px",
-                          fontSize: "16px",
-                        }}
-                      />
+                              : "1.5px solid green"
+                            : "none",
+                        padding: "2px",
+                        borderRadius: "6px",
+                        fontSize: "16px",
+                      }}
+                    />
 
-                      {telNumValue.length === 0 ? (
-                        <p style={{ color: "#021526" }}>
-                          ✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით
-                        </p>
-                      ) : errors.telNum ? (
-                        <p style={{ color: "#F93B1D" }}>
-                          {errors.telNum.message}
-                        </p>
-                      ) : (
-                        <p style={{ color: "green" }}>
-                          ✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="photos">
-                    <label
-                      htmlFor="file-upload"
-                      style={{ color: imageUrl ? "green" : "initial" }}
-                    >
-                      ატვირთეთ ფოტო *
-                    </label>
-                    {!imageUrl ? (
-                      <label
-                        className="custom-file-upload"
-                        htmlFor="file-upload"
-                      >
-                        <span className="plus">+</span>
-                        <input
-                          id="file-upload"
-                          type="file"
-                          accept="image/*"
-                          style={{ display: "none" }}
-                          onChange={handleFileChange}
-                        />
-                      </label>
+                    {telNumValue.length === 0 ? (
+                      <p style={{ color: "#021526" }}>
+                        ✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით
+                      </p>
+                    ) : errors.telNum ? (
+                      <p style={{ color: "#F93B1D" }}>
+                        {errors.telNum.message}
+                      </p>
                     ) : (
-                      <div
-                        className="custom-file-upload"
-                        style={{
-                          border: imageUrl
-                            ? "2px dashed green"
-                            : "2px dashed #021526",
-                        }}
-                      >
-                        <div className="image-preview-wrapper">
-                          <img
-                            src={imageUrl}
-                            alt="preview"
-                            className="image-preview"
-                          />
-                          <button
-                            type="button"
-                            className="remove-image-btn"
-                            onClick={handleRemoveImage}
-                          >
-                            <img src={trash} alt="trash" className="trash" />
-                          </button>
-                        </div>
-                      </div>
+                      <p style={{ color: "green" }}>
+                        ✓ მხოლოდ 9 რიცხვი დაიწყეთ 5 ით
+                      </p>
                     )}
                   </div>
-                  <div className="agent-btns">
-                    <button
-                      className="agent-remove-btn in-agent"
-                      onClick={remove}
+                </div>
+                <div className="photos">
+                  <label
+                    htmlFor="file-upload"
+                    style={{ color: imageUrl ? "green" : "initial" }}
+                  >
+                    ატვირთეთ ფოტო *
+                  </label>
+                  {!imageUrl ? (
+                    <label className="custom-file-upload" htmlFor="file-upload">
+                      <span className="plus">+</span>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={handleFileChange}
+                      />
+                    </label>
+                  ) : (
+                    <div
+                      className="custom-file-upload"
+                      style={{
+                        border: imageUrl
+                          ? "2px dashed green"
+                          : "2px dashed #021526",
+                      }}
                     >
-                      გაუქმება
-                    </button>
-                    <button className="agent-add-btn in-agent">
-                      დაამატე აგენტი
-                    </button>
-                  </div>
-                </form>
+                      <div className="image-preview-wrapper">
+                        <img
+                          src={imageUrl}
+                          alt="preview"
+                          className="image-preview"
+                        />
+                        <button
+                          type="button"
+                          className="remove-image-btn"
+                          onClick={handleRemoveImage}
+                        >
+                          <img src={trash} alt="trash" className="trash" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="agent-btns">
+                  <button
+                    className="agent-remove-btn in-agent"
+                    onClick={remove}
+                  >
+                    გაუქმება
+                  </button>
+                  <button className="agent-add-btn in-agent">
+                    დაამატე აგენტი
+                  </button>
+                </div>
               </div>
             </div>
           </div>

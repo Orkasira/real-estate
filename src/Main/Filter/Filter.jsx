@@ -58,35 +58,6 @@ function Filter() {
     blurOverlayRef.current.style.display = "none";
   }
 
-  // form validation
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    trigger,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      Email: "",
-      telNum: "",
-    },
-  });
-
-  const onSubmit = async (data) => console.log(data);
-
-  const firstNameValue = watch("firstName");
-  const lastNameValue = watch("lastName");
-  const EmailValue = watch("Email");
-  const telNumValue = watch("telNum");
-
-  useEffect(() => {
-    trigger();
-  }, []);
-
   // axios api
 
   const getPosts = async () => {
@@ -102,6 +73,91 @@ function Filter() {
   useEffect(() => {
     getPosts();
   }, []);
+
+  const addAgent = async (agentData) => {
+    try {
+      console.log("FormData being sent:", agentData);
+      const response = await instance.post("/agents", agentData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error adding agent:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
+  const getAgents = async () => {
+    try {
+      const response = await instance.get("/agents");
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error fetching agents:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  };
+
+  // form validation
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      surname: "",
+      Email: "",
+      telNum: "",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("surname", data.surname);
+      formData.append("email", data.Email);
+      formData.append("phone", data.telNum);
+      formData.append("avatar", image); // image არის useState-დან
+
+      await instance.post("/agents", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // წარმატებით დამატების შემდეგ შეგიძლია გამოიძახო აგენტების განახლება ან დახურვა
+      console.log("აგენტის დამატება წარმატებით განხორციელდა");
+      remove(); // ეს შენი ფუნქციაა modal-ის დასახურად
+    } catch (error) {
+      console.error(
+        "შეცდომა აგენტის დამატებისას:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  const nameValue = watch("name");
+  const surnameValue = watch("surname");
+  const EmailValue = watch("Email");
+  const telNumValue = watch("telNum");
+
+  useEffect(() => {
+    trigger();
+  }, []);
+
+  console.log(errors);
 
   //  filter on click
 
@@ -172,29 +228,29 @@ function Filter() {
               <label htmlFor="">სახელი *</label>
               <input
                 type="text"
-                id="firstName"
+                id="name"
                 placeholder="სახელი"
-                {...register("firstName", {
+                {...register("name", {
                   required: "✓ მინიმუმ ორი სიმბოლო",
                   minLength: {
                     value: 2,
                     message: "✓ ჩაწერეთ ვალიდური მონაცემები",
                   },
                 })}
-                onFocus={() => setActiveInput("firstName")}
+                onFocus={() => setActiveInput("name")}
                 onBlur={() => setActiveInput(null)}
                 style={{
                   border:
-                    firstNameValue.length === 0
+                    nameValue.length === 0
                       ? "1.5px solid #021526"
-                      : errors.firstName
+                      : errors.name
                       ? "1.5px solid #F93B1D"
                       : "1.5px solid green",
                   outline:
-                    activeInput === "firstName"
-                      ? firstNameValue.length === 0
+                    activeInput === "name"
+                      ? nameValue.length === 0
                         ? "1.5px solid #021526"
-                        : errors.firstName
+                        : errors.name
                         ? "1.5px solid #F93B1D"
                         : "1.5px solid green"
                       : "none",
@@ -202,9 +258,9 @@ function Filter() {
                 }}
               />
 
-              {firstNameValue.length === 0 ? (
+              {nameValue.length === 0 ? (
                 <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
-              ) : errors.firstName ? (
+              ) : errors.name ? (
                 <p style={{ color: "#F93B1D" }}>
                   ✓ ჩაწერეთ ვალიდური მონაცემები
                 </p>
@@ -216,29 +272,29 @@ function Filter() {
               <label htmlFor="">გვარი</label>
               <input
                 type="text"
-                id="lastName"
+                id="surname"
                 placeholder="სახელი"
-                {...register("lastName", {
+                {...register("surname", {
                   required: "✓ მინიმუმ ორი სიმბოლო",
                   minLength: {
                     value: 2,
                     message: "✓ ჩაწერეთ ვალიდური მონაცემები",
                   },
                 })}
-                onFocus={() => setActiveInput("lastName")}
+                onFocus={() => setActiveInput("surname")}
                 onBlur={() => setActiveInput(null)}
                 style={{
                   border:
-                    lastNameValue.length === 0
+                    surnameValue.length === 0
                       ? "1.5px solid #021526"
-                      : errors.lastName
+                      : errors.surname
                       ? "1.5px solid #F93B1D"
                       : "1.5px solid green",
                   outline:
-                    activeInput === "lastName"
-                      ? lastNameValue.length === 0
+                    activeInput === "surname"
+                      ? surnameValue.length === 0
                         ? "1.5px solid #021526"
-                        : errors.lastName
+                        : errors.surname
                         ? "1.5px solid #F93B1D"
                         : "1.5px solid green"
                       : "none",
@@ -246,9 +302,9 @@ function Filter() {
                 }}
               />
 
-              {lastNameValue.length === 0 ? (
+              {surnameValue.length === 0 ? (
                 <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
-              ) : errors.lastName ? (
+              ) : errors.surname ? (
                 <p style={{ color: "#F93B1D" }}>
                   ✓ ჩაწერეთ ვალიდური მონაცემები
                 </p>
