@@ -129,7 +129,7 @@ function Filter() {
       formData.append("surname", data.surname);
       formData.append("email", data.Email);
       formData.append("phone", data.telNum);
-      formData.append("avatar", image); // image არის useState-დან
+      formData.append("avatar", image);
 
       await instance.post("/agents", formData, {
         headers: {
@@ -137,9 +137,8 @@ function Filter() {
         },
       });
 
-      // წარმატებით დამატების შემდეგ შეგიძლია გამოიძახო აგენტების განახლება ან დახურვა
       console.log("აგენტის დამატება წარმატებით განხორციელდა");
-      remove(); // ეს შენი ფუნქციაა modal-ის დასახურად
+      remove();
     } catch (error) {
       console.error(
         "შეცდომა აგენტის დამატებისას:",

@@ -32,13 +32,15 @@ function Addlist() {
       lastName: "",
       Email: "",
       telNum: "",
+      address: "",
+      zip: "",
     },
   });
 
   const onSubmit = async (formData) => {
     try {
-      await addAgent(formData); // აგენტის დამატება სერვერზე
-      await fetchAgents(); // სიის განახლება სერვერიდან, თუ გინდა სერვერიდან ახალი ჩამოტვირთვა
+      await addAgent(formData);
+      await fetchAgents();
     } catch (error) {
       console.error("Agent add failed", error);
     }
@@ -48,6 +50,8 @@ function Addlist() {
   const lastNameValue = watch("lastName");
   const EmailValue = watch("Email");
   const telNumValue = watch("telNum");
+  const addressValue = watch("address")
+  const zipValue = watch("zip");
 
   // city and region lists
 
@@ -134,7 +138,7 @@ function Addlist() {
   const fetchAgents = async () => {
     try {
       const response = await instance.get("/agents");
-      console.log("AGENT DATA:", response.data); // ← აქ დააკონსოლე
+      console.log("AGENT DATA:", response.data);
       setAgents(response.data);
     } catch (error) {
       console.error(error);
@@ -152,14 +156,14 @@ function Addlist() {
       formData.append("last_name", newAgentData.lastName);
       formData.append("email", newAgentData.Email);
       formData.append("phone", newAgentData.telNum);
-      formData.append("avatar", image); // image useState-დან
+      formData.append("avatar", image);
 
       await instance.post("/agents", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      await fetchAgents(); // select ავტომატურად განახლდეს
-      remove(); // modal დახურვა
+      await fetchAgents();
+      remove();
     } catch (error) {
       console.error(error);
     }
@@ -188,11 +192,85 @@ function Addlist() {
             <div className="placement-content">
               <div className="placement-item">
                 <label htmlFor="misamarti">მისამართი *</label>
-                <input type="text" id="misamarti" />
+                <input
+                  type="text"
+                  id="misamarti"
+                  {...register("address", {
+                    required: "✓ მინიმუმ ორი სიმბოლო",
+                    minLength: {
+                      value: 2,
+                      message: "✓ ჩაწერეთ ვალიდური მონაცემები",
+                    },
+                  })}
+                  onFocus={() => setActiveInput("address")}
+                  onBlur={() => setActiveInput(null)}
+                  style={{
+                    border:
+                      addressValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errors.address
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
+                    outline:
+                      activeInput === "address"
+                        ? watch("address")?.length === 0
+                          ? "1.5px solid #021526"
+                          : errors.address
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
+                        : "none",
+                    padding: "2px",
+                  }}
+                />
+                {watch("address")?.length === 0 ? (
+                  <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
+                ) : errors.address ? (
+                  <p style={{ color: "#F93B1D" }}>✓ ჩაწერეთ ვალიდური მონაცემები</p>
+                ) : (
+                  <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
+                )}
+
               </div>
               <div className="placement-item">
                 <label htmlFor="index">საფოსტო ინდექსი *</label>
-                <input type="text" id="index" />
+                <input
+                  type="text"
+                  id="zip"
+                  placeholder="საფოსტო ინდექსი"
+                  {...register("zip", {
+                    required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                    },
+                  })}
+                  onFocus={() => setActiveInput("zip")}
+                  onBlur={() => setActiveInput(null)}
+                  style={{
+                    border:
+                      zipValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errors.zip
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
+                    outline:
+                      activeInput === "zip"
+                        ? zipValue.length === 0
+                          ? "1.5px solid #021526"
+                          : errors.zip
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
+                        : "none",
+                    padding: "2px",
+                  }}
+                />
+                {zipValue.length === 0 ? (
+                  <p style={{ color: "#021526" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
+                ) : errors.zip ? (
+                  <p style={{ color: "#F93B1D" }}>{errors.zip.message}</p>
+                ) : (
+                  <p style={{ color: "green" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
+                )}
               </div>
             </div>
             <div className="region-city-container">
@@ -343,15 +421,15 @@ function Addlist() {
                           firstNameValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.firstName
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green",
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green",
                         outline:
                           activeInput === "firstName"
                             ? firstNameValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.firstName
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green"
+                                ? "1.5px solid #F93B1D"
+                                : "1.5px solid green"
                             : "none",
                         padding: "2px",
                       }}
@@ -387,15 +465,15 @@ function Addlist() {
                           lastNameValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.lastName
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green",
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green",
                         outline:
                           activeInput === "lastName"
                             ? lastNameValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.lastName
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green"
+                                ? "1.5px solid #F93B1D"
+                                : "1.5px solid green"
                             : "none",
                         padding: "2px",
                       }}
@@ -432,15 +510,15 @@ function Addlist() {
                           EmailValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.Email
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green",
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green",
                         outline:
                           activeInput === "Email"
                             ? EmailValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.Email
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green"
+                                ? "1.5px solid #F93B1D"
+                                : "1.5px solid green"
                             : "none",
                         padding: "2px",
                       }}
@@ -480,15 +558,15 @@ function Addlist() {
                           telNumValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.telNum
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green",
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green",
                         outline:
                           activeInput === "telNum"
                             ? telNumValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.telNum
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green"
+                                ? "1.5px solid #F93B1D"
+                                : "1.5px solid green"
                             : "none",
                         padding: "2px",
                         borderRadius: "6px",
