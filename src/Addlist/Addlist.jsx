@@ -24,6 +24,7 @@ function Addlist() {
     handleSubmit,
     watch,
     trigger,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -50,7 +51,7 @@ function Addlist() {
   const lastNameValue = watch("lastName");
   const EmailValue = watch("Email");
   const telNumValue = watch("telNum");
-  const addressValue = watch("address")
+  const addressValue = watch("address");
   const zipValue = watch("zip");
 
   // city and region lists
@@ -169,6 +170,18 @@ function Addlist() {
     }
   };
 
+  // Add this useEffect after selectedRegionId is defined
+  useEffect(() => {
+    // When region changes, reset city_id
+    if (selectedRegionId) {
+      // Only reset if city_id already set
+      if (watch("city_id")) {
+        // Reset city_id field
+        setValue("city_id", "");
+      }
+    }
+  }, [selectedRegionId]);
+
   return (
     <>
       <div className="add-list-container">
@@ -209,15 +222,15 @@ function Addlist() {
                       addressValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.address
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                     outline:
                       activeInput === "address"
                         ? watch("address")?.length === 0
                           ? "1.5px solid #021526"
                           : errors.address
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -225,11 +238,12 @@ function Addlist() {
                 {watch("address")?.length === 0 ? (
                   <p style={{ color: "#021526" }}>✓ მინიმუმ ორი სიმბოლო</p>
                 ) : errors.address ? (
-                  <p style={{ color: "#F93B1D" }}>✓ ჩაწერეთ ვალიდური მონაცემები</p>
+                  <p style={{ color: "#F93B1D" }}>
+                    ✓ ჩაწერეთ ვალიდური მონაცემები
+                  </p>
                 ) : (
                   <p style={{ color: "green" }}>✓ მინიმუმ ორი სიმბოლო</p>
                 )}
-
               </div>
               <div className="placement-item">
                 <label htmlFor="index">საფოსტო ინდექსი *</label>
@@ -251,15 +265,15 @@ function Addlist() {
                       zipValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.zip
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                     outline:
                       activeInput === "zip"
                         ? zipValue.length === 0
                           ? "1.5px solid #021526"
                           : errors.zip
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -276,29 +290,71 @@ function Addlist() {
             <div className="region-city-container">
               <div className="region-city-content">
                 <label htmlFor="">რეგიონი</label>
-                <select {...register("region_id")}>
-                  <option value="">აირჩიეთ რეგიონი</option>
+                <select
+                  {...register("region_id", { required: "აირჩიეთ რეგიონი" })}
+                  onFocus={() => setActiveInput("region_id")}
+                  onBlur={() => setActiveInput(null)}
+                  style={{
+                    border:
+                      watch("region_id") === ""
+                        ? "1.5px solid #021526"
+                        : errors.region_id
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
+                    outline:
+                      activeInput === "region_id"
+                        ? watch("region_id") === ""
+                          ? "1.5px solid #021526"
+                          : errors.region_id
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
+                        : "none",
+                    padding: "2px",
+                  }}
+                >
+                  {watch("region_id") === "" && (
+                    <option value="">აირჩიეთ რეგიონი</option>
+                  )}
                   {regions.map((region) => (
                     <option key={region.id} value={region.id}>
                       {region.name}
                     </option>
                   ))}
-                  {errors.region_id && (
-                    <Error>{errors.region_id.message}</Error>
-                  )}
                 </select>
               </div>
               <div className="region-city-content">
                 <label htmlFor="">ქალაქი</label>
-                <select {...register("city_id")}>
-                  <option value="">აირჩიეთ ქალაქი</option>
+                <select
+                  {...register("city_id", { required: "აირჩიეთ ქალაქი" })}
+                  onFocus={() => setActiveInput("city_id")}
+                  onBlur={() => setActiveInput(null)}
+                  style={{
+                    border:
+                      watch("city_id") === "" || watch("region_id") === ""
+                        ? "1.5px solid #021526"
+                        : errors.city_id
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
+                    outline:
+                      activeInput === "city_id"
+                        ? watch("city_id") === "" || watch("region_id") === ""
+                          ? "1.5px solid #021526"
+                          : errors.city_id
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
+                        : "none",
+                    padding: "2px",
+                  }}
+                >
+                  {watch("city_id") === "" && (
+                    <option value="">აირჩიეთ ქალაქი</option>
+                  )}
                   {filteredCities.map((city) => (
                     <option key={city.id} value={city.id}>
                       {city.name}
                     </option>
                   ))}
                 </select>
-
                 {errors.city_id && <Error>{errors.city_id.message}</Error>}
               </div>
             </div>
@@ -421,15 +477,15 @@ function Addlist() {
                           firstNameValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.firstName
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                         outline:
                           activeInput === "firstName"
                             ? firstNameValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.firstName
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                             : "none",
                         padding: "2px",
                       }}
@@ -465,15 +521,15 @@ function Addlist() {
                           lastNameValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.lastName
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                         outline:
                           activeInput === "lastName"
                             ? lastNameValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.lastName
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                             : "none",
                         padding: "2px",
                       }}
@@ -510,15 +566,15 @@ function Addlist() {
                           EmailValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.Email
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                         outline:
                           activeInput === "Email"
                             ? EmailValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.Email
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                             : "none",
                         padding: "2px",
                       }}
@@ -558,15 +614,15 @@ function Addlist() {
                           telNumValue.length === 0
                             ? "1.5px solid #021526"
                             : errors.telNum
-                              ? "1.5px solid #F93B1D"
-                              : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                         outline:
                           activeInput === "telNum"
                             ? telNumValue.length === 0
                               ? "1.5px solid #021526"
                               : errors.telNum
-                                ? "1.5px solid #F93B1D"
-                                : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                             : "none",
                         padding: "2px",
                         borderRadius: "6px",
