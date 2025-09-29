@@ -1,15 +1,15 @@
 import Header from "./header/Header.jsx";
 import { Route, Routes } from "react-router";
-import Main from "./Main/Main.jsx";
 import Listpage from "./Listpage/Listpage.jsx";
 import Addlist from "./Addlist/Addlist.jsx";
+import MainPage from "./MainPage/MainPage.jsx";
 
 function App() {
   return (
     <>
       <Header />
       <Routes>
-        <Route path="/Main" element={<Main />} />
+        <Route path="/MainPage" element={<MainPage />} />
         <Route path="/Listpage" element={<Listpage />} />
         <Route path="/Addlist" element={<Addlist />} />
       </Routes>

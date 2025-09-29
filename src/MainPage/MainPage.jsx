@@ -1,8 +1,8 @@
-import "./Filter.css";
-import arrow from "../../assets/Shape.png";
+import "./MainPage.css";
+import arrow from "../assets/Shape.png";
 import React, { useState, useRef, useEffect } from "react";
 import "@fontsource/firago/500.css";
-import trash from "../../assets/trash-2.png";
+import trash from "../assets/trash-2.png";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -17,7 +17,7 @@ export const instance = axios.create({
   },
 });
 
-function Filter() {
+function MainPage() {
   // const [selectedFilter, setSelectedFilter] = useState(null);
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -457,4 +457,4 @@ function Filter() {
   );
 }
 
-export default Filter;
+export default MainPage;

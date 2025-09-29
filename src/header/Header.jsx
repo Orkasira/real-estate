@@ -6,7 +6,7 @@ function Header() {
   return (
     <>
       <header>
-        <Link to="/Main">
+        <Link to="/MainPage">
           <img src={logo} alt="logo" />
         </Link>
       </header>
