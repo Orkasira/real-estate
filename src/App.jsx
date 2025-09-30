@@ -9,7 +9,7 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/MainPage" element={<MainPage />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/Listpage" element={<Listpage />} />
         <Route path="/Addlist" element={<Addlist />} />
       </Routes>

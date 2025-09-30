@@ -182,6 +182,16 @@ function Addlist() {
     }
   }, [selectedRegionId]);
 
+  // error message
+
+  function ErrorMessage({ children }) {
+    return (
+      <p style={{ color: "red", fontSize: "14px", marginTop: "4px" }}>
+        {children}
+      </p>
+    );
+  }
+
   return (
     <>
       <div className="add-list-container">
@@ -355,7 +365,9 @@ function Addlist() {
                     </option>
                   ))}
                 </select>
-                {errors.city_id && <Error>{errors.city_id.message}</Error>}
+                {errors.city_id && (
+                  <ErrorMessage>{errors.city_id.message}</ErrorMessage>
+                )}
               </div>
             </div>
           </div>
@@ -705,7 +717,7 @@ function Addlist() {
           </div>
         </form>
         <div className="list-btns">
-          <Link to="/Main">
+          <Link to="/">
             <button className="cancel btn">გაუქმება</button>
           </Link>
           <button className="add btn">დაამატე ლისტინგი</button>
