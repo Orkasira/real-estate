@@ -63,6 +63,10 @@ function Addlist() {
   const zipValue = watchListing("zip");
   const selectedRegionId = watchListing("region_id");
   const cityValue = watchListing("city_id");
+  const priceValue = watchListing("price");
+  const m2Value = watchListing("m2");
+  const bedroomsValue = watchListing("bedrooms");
+  const descriptionValue = watchListing("description");
 
   const nameValue = watchAgent("name");
   const surnameValue = watchAgent("surname");
@@ -289,7 +293,6 @@ function Addlist() {
                 <input
                   type="text"
                   id="zip"
-                  placeholder="საფოსტო ინდექსი"
                   {...registerListing("zip", {
                     required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
                     pattern: {
@@ -413,20 +416,171 @@ function Addlist() {
             <div className="detail-content">
               <div className="detail-item">
                 <label htmlFor="price">ფასი</label>
-                <input type="text" id="price" />
+                <input
+                  type="number"
+                  id="price"
+                  {...registerListing("price", {
+                    required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                    },
+                  })}
+                  onFocus={() => setActiveInput("price")}
+                  onBlur={() => setActiveInput(null)}
+                  style={{
+                    border:
+                      priceValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errorsListing.price
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
+                    outline:
+                      activeInput === "price"
+                        ? priceValue.length === 0
+                          ? "1.5px solid #021526"
+                          : errorsListing.price
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
+                        : "none",
+                    padding: "2px",
+                  }}
+                />
+                {priceValue.length === 0 ? (
+                  <p style={{ color: "#021526" }}>✓ ჩაწერეთ მხოლოდ რიცხვები </p>
+                ) : errorsListing.price ? (
+                  <p style={{ color: "#F93B1D" }}>
+                    {errorsListing.price.message}
+                  </p>
+                ) : (
+                  <p style={{ color: "green" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
+                )}
               </div>
               <div className="detail-item">
-                <label htmlFor="m2">ფართობი</label>
-                <input type="text" id="m2" />
+                <label htmlFor="m2">ფართობი m²</label>
+                <input
+                  type="number"
+                  id="m2"
+                  {...registerListing("m2", {
+                    required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                    },
+                  })}
+                  onFocus={() => setActiveInput("m2")}
+                  onBlur={() => setActiveInput(null)}
+                  style={{
+                    border:
+                      m2Value.length === 0
+                        ? "1.5px solid #021526"
+                        : errorsListing.m2
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
+                    outline:
+                      activeInput === "m2"
+                        ? m2Value.length === 0
+                          ? "1.5px solid #021526"
+                          : errorsListing.m2
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
+                        : "none",
+                    padding: "2px",
+                  }}
+                />
+                {m2Value.length === 0 ? (
+                  <p style={{ color: "#021526" }}>✓ ჩაწერეთ მხოლოდ რიცხვები </p>
+                ) : errorsListing.m2 ? (
+                  <p style={{ color: "#F93B1D" }}>{errorsListing.m2.message}</p>
+                ) : (
+                  <p style={{ color: "green" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
+                )}
               </div>
             </div>
             <div className="detail-item">
               <label htmlFor="bedrooms">საძინებლების რაოდენობა*</label>
-              <input type="text" id="bedrooms" />
+              <input
+                type="number"
+                id="bedrooms"
+                {...registerListing("bedrooms", {
+                  required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: "✓ ჩაწერეთ მხოლოდ რიცხვები",
+                  },
+                })}
+                onFocus={() => setActiveInput("bedrooms")}
+                onBlur={() => setActiveInput(null)}
+                style={{
+                  border:
+                    bedroomsValue.length === 0
+                      ? "1.5px solid #021526"
+                      : errorsListing.bedrooms
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
+                  outline:
+                    activeInput === "bedrooms"
+                      ? bedroomsValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errorsListing.bedrooms
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
+                      : "none",
+                  padding: "2px",
+                }}
+              />
+              {bedroomsValue.length === 0 ? (
+                <p style={{ color: "#021526" }}>✓ ჩაწერეთ მხოლოდ რიცხვები </p>
+              ) : errorsListing.bedrooms ? (
+                <p style={{ color: "#F93B1D" }}>
+                  {errorsListing.bedrooms.message}
+                </p>
+              ) : (
+                <p style={{ color: "green" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
+              )}
             </div>
             <div className="description">
               <label htmlFor="">აღწერა *</label>
-              <textarea name="" id="" className="text"></textarea>
+              <textarea
+                name="description"
+                id="description"
+                className="text"
+                {...registerListing("description", {
+                  required: "✓ მინიმუმ 5 სიტყვა",
+                  pattern: {
+                    value: /^(\S+\s+){4,}\S+$/, // მინიმუმ 5 სიტყვა
+                    message: "✓ მინიმუმ 5 სიტყვა",
+                  },
+                })}
+                onFocus={() => setActiveInput("description")}
+                onBlur={() => setActiveInput(null)}
+                style={{
+                  border:
+                    descriptionValue.length === 0
+                      ? "1.5px solid #021526"
+                      : errorsListing.description
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
+                  outline:
+                    activeInput === "description"
+                      ? descriptionValue.length === 0
+                        ? "1.5px solid #021526"
+                        : errorsListing.description
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
+                      : "none",
+                  padding: "2px",
+                }}
+              />
+              {descriptionValue.length === 0 ? (
+                <p style={{ color: "#021526" }}>✓ მინიმუმ 5 სიტყვა</p>
+              ) : errorsListing.description ? (
+                <p style={{ color: "#F93B1D" }}>
+                  {errorsListing.description.message}
+                </p>
+              ) : (
+                <p style={{ color: "green" }}>✓ მინიმუმ 5 სიტყვა</p>
+              )}
             </div>
             <div className="photos">
               <label
