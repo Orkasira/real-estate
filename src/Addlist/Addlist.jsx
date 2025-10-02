@@ -548,7 +548,7 @@ function Addlist() {
                 {...registerListing("description", {
                   required: "✓ მინიმუმ 5 სიტყვა",
                   pattern: {
-                    value: /^(\S+\s+){4,}\S+$/, // მინიმუმ 5 სიტყვა
+                    value: /^(\S+\s+){4,}\S+(\s*)$/,
                     message: "✓ მინიმუმ 5 სიტყვა",
                   },
                 })}
