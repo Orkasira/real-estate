@@ -44,7 +44,6 @@ function Addlist() {
     register: registerAgent,
     handleSubmit: handleSubmitAgent,
     watch: watchAgent,
-    setValue: setValueAgent,
     formState: { errors: errorsAgent },
   } = useForm({
     mode: "onChange",
@@ -62,7 +61,6 @@ function Addlist() {
   const addressValue = watchListing("address");
   const zipValue = watchListing("zip");
   const selectedRegionId = watchListing("region_id");
-  const cityValue = watchListing("city_id");
   const priceValue = watchListing("price");
   const m2Value = watchListing("m2");
   const bedroomsValue = watchListing("bedrooms");
@@ -265,15 +263,15 @@ function Addlist() {
                       addressValue.length === 0
                         ? "1.5px solid #021526"
                         : errorsListing.address
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
                     outline:
                       activeInput === "address"
                         ? watchListing("address")?.length === 0
                           ? "1.5px solid #021526"
                           : errorsListing.address
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -307,15 +305,15 @@ function Addlist() {
                       zipValue.length === 0
                         ? "1.5px solid #021526"
                         : errorsListing.zip
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
                     outline:
                       activeInput === "zip"
                         ? zipValue.length === 0
                           ? "1.5px solid #021526"
                           : errorsListing.zip
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -345,15 +343,15 @@ function Addlist() {
                       watchListing("region_id") === ""
                         ? "1.5px solid #021526"
                         : errorsListing.region_id
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
                     outline:
                       activeInput === "region_id"
                         ? watchListing("region_id") === ""
                           ? "1.5px solid #021526"
                           : errorsListing.region_id
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -379,19 +377,19 @@ function Addlist() {
                   style={{
                     border:
                       watchListing("city_id") === "" ||
-                      watchListing("region_id") === ""
+                        watchListing("region_id") === ""
                         ? "1.5px solid #021526"
                         : errorsListing.city_id
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
                     outline:
                       activeInput === "city_id"
                         ? watchListing("city_id") === "" ||
                           watchListing("region_id") === ""
                           ? "1.5px solid #021526"
                           : errorsListing.city_id
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -433,15 +431,15 @@ function Addlist() {
                       priceValue.length === 0
                         ? "1.5px solid #021526"
                         : errorsListing.price
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
                     outline:
                       activeInput === "price"
                         ? priceValue.length === 0
                           ? "1.5px solid #021526"
                           : errorsListing.price
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -475,15 +473,15 @@ function Addlist() {
                       m2Value.length === 0
                         ? "1.5px solid #021526"
                         : errorsListing.m2
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green",
                     outline:
                       activeInput === "m2"
                         ? m2Value.length === 0
                           ? "1.5px solid #021526"
                           : errorsListing.m2
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
@@ -516,15 +514,15 @@ function Addlist() {
                     bedroomsValue.length === 0
                       ? "1.5px solid #021526"
                       : errorsListing.bedrooms
-                      ? "1.5px solid #F93B1D"
-                      : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                   outline:
                     activeInput === "bedrooms"
                       ? bedroomsValue.length === 0
                         ? "1.5px solid #021526"
                         : errorsListing.bedrooms
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -559,15 +557,15 @@ function Addlist() {
                     descriptionValue.length === 0
                       ? "1.5px solid #021526"
                       : errorsListing.description
-                      ? "1.5px solid #F93B1D"
-                      : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                   outline:
                     activeInput === "description"
                       ? descriptionValue.length === 0
                         ? "1.5px solid #021526"
                         : errorsListing.description
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -694,15 +692,15 @@ function Addlist() {
                         nameValue.length === 0
                           ? "1.5px solid #021526"
                           : errorsAgent.name
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                       outline:
                         activeInput === "name"
                           ? nameValue.length === 0
                             ? "1.5px solid #021526"
                             : errorsAgent.name
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                           : "none",
                       padding: "2px",
                     }}
@@ -738,15 +736,15 @@ function Addlist() {
                         surnameValue.length === 0
                           ? "1.5px solid #021526"
                           : errorsAgent.surname
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                       outline:
                         activeInput === "surname"
                           ? surnameValue.length === 0
                             ? "1.5px solid #021526"
                             : errorsAgent.surname
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                           : "none",
                       padding: "2px",
                     }}
@@ -783,15 +781,15 @@ function Addlist() {
                         EmailValue.length === 0
                           ? "1.5px solid #021526"
                           : errorsAgent.Email
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                       outline:
                         activeInput === "Email"
                           ? EmailValue.length === 0
                             ? "1.5px solid #021526"
                             : errorsAgent.Email
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                           : "none",
                       padding: "2px",
                     }}
@@ -831,15 +829,15 @@ function Addlist() {
                         telNumValue.length === 0
                           ? "1.5px solid #021526"
                           : errorsAgent.telNum
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green",
+                            ? "1.5px solid #F93B1D"
+                            : "1.5px solid green",
                       outline:
                         activeInput === "telNum"
                           ? telNumValue.length === 0
                             ? "1.5px solid #021526"
                             : errorsAgent.telNum
-                            ? "1.5px solid #F93B1D"
-                            : "1.5px solid green"
+                              ? "1.5px solid #F93B1D"
+                              : "1.5px solid green"
                           : "none",
                       padding: "2px",
                       borderRadius: "6px",
