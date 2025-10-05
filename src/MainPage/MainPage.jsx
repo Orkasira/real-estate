@@ -214,15 +214,15 @@ function MainPage() {
                     nameValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.name
-                      ? "1.5px solid #F93B1D"
-                      : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                   outline:
                     activeInput === "name"
                       ? nameValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.name
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -258,15 +258,15 @@ function MainPage() {
                     surnameValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.surname
-                      ? "1.5px solid #F93B1D"
-                      : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                   outline:
                     activeInput === "surname"
                       ? surnameValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.surname
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -303,15 +303,15 @@ function MainPage() {
                     EmailValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.Email
-                      ? "1.5px solid #F93B1D"
-                      : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                   outline:
                     activeInput === "Email"
                       ? EmailValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.Email
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -351,15 +351,15 @@ function MainPage() {
                     telNumValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.telNum
-                      ? "1.5px solid #F93B1D"
-                      : "1.5px solid green",
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green",
                   outline:
                     activeInput === "telNum"
                       ? telNumValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.telNum
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green"
+                          ? "1.5px solid #F93B1D"
+                          : "1.5px solid green"
                       : "none",
                   padding: "2px",
                   borderRadius: "6px",
