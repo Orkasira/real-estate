@@ -147,6 +147,14 @@ function MainPage() {
     console.log("საძინებლების რაოდენობა");
   }
 
+  useEffect(() => {
+    const fetchListings = async () => {
+      const res = await instance.get("/listings");
+      setListings(res.data);
+    };
+    fetchListings();
+  }, []);
+
   return (
     <>
       <div className="filter-container">
@@ -214,15 +222,15 @@ function MainPage() {
                     nameValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.name
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
                   outline:
                     activeInput === "name"
                       ? nameValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.name
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -258,15 +266,15 @@ function MainPage() {
                     surnameValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.surname
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
                   outline:
                     activeInput === "surname"
                       ? surnameValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.surname
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -303,15 +311,15 @@ function MainPage() {
                     EmailValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.Email
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
                   outline:
                     activeInput === "Email"
                       ? EmailValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.Email
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
                       : "none",
                   padding: "2px",
                 }}
@@ -351,15 +359,15 @@ function MainPage() {
                     telNumValue.length === 0
                       ? "1.5px solid #021526"
                       : errors.telNum
-                        ? "1.5px solid #F93B1D"
-                        : "1.5px solid green",
+                      ? "1.5px solid #F93B1D"
+                      : "1.5px solid green",
                   outline:
                     activeInput === "telNum"
                       ? telNumValue.length === 0
                         ? "1.5px solid #021526"
                         : errors.telNum
-                          ? "1.5px solid #F93B1D"
-                          : "1.5px solid green"
+                        ? "1.5px solid #F93B1D"
+                        : "1.5px solid green"
                       : "none",
                   padding: "2px",
                   borderRadius: "6px",
@@ -423,6 +431,21 @@ function MainPage() {
             <button className="agent-add-btn in-agent">დაამატე აგენტი</button>
           </div>
         </form>
+      </div>
+      <div className="cards-container">
+        {posts.map((item) => (
+          <div className="card" key={item.id}>
+            <img src={item.image} alt={item.address} className="card-img" />
+            <div className="card-info">
+              <h3 className="card-price">{item.price} ₾</h3>
+              <p className="card-address">{item.address}</p>
+              <div className="card-details">
+                <p>ფართობი: {item.area} მ²</p>
+                <p>საძინებელი: {item.bedrooms}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );
