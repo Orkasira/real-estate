@@ -18,7 +18,6 @@ export const instance = axios.create({
 });
 
 function MainPage() {
-  // const [selectedFilter, setSelectedFilter] = useState(null);
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const agentBtnRef = useRef(null);

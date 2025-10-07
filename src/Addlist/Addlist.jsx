@@ -10,8 +10,10 @@ import { useNavigate } from "react-router-dom";
 function Addlist() {
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
-  const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [listingImage, setListingImage] = useState(null);
+  const [listingImageUrl, setListingImageUrl] = useState("");
+  const [agentImage, setAgentImage] = useState(null);
+  const [agentImageUrl, setAgentImageUrl] = useState("");
   const agentBtnRef = useRef(null);
   const removeBtnRef = useRef(null);
   const blurOverlayRef = useRef(null);
@@ -20,7 +22,7 @@ function Addlist() {
 
   const navigate = useNavigate();
 
-  // Listing useForm
+  // Listing useForm // Listing useForm // Listing useForm // Listing useForm // Listing useForm //
   const {
     register: registerListing,
     handleSubmit: handleSubmitListing,
@@ -30,19 +32,20 @@ function Addlist() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      type: "",
+      is_rental: "",
       address: "",
-      zip: "",
+      zip_code: "",
       region_id: "",
       city_id: "",
       price: "",
-      m2: "",
+      area: "",
       bedrooms: "",
       description: "",
+      image: null,
     },
   });
 
-  // Agent useForm
+  // Agent useForm // Agent useForm // Agent useForm // Agent useForm // Agent useForm // Agent useForm //
   const {
     register: registerAgent,
     handleSubmit: handleSubmitAgent,
@@ -60,12 +63,12 @@ function Addlist() {
     },
   });
 
-  // Watch values
+  // Watch values // Watch values // Watch values // Watch values // Watch values // Watch values //
   const addressValue = watchListing("address");
-  const zipValue = watchListing("zip");
+  const zip_codeValue = watchListing("zip_code");
   const selectedRegionId = watchListing("region_id");
   const priceValue = watchListing("price");
-  const m2Value = watchListing("m2");
+  const areaValue = watchListing("area");
   const bedroomsValue = watchListing("bedrooms");
   const descriptionValue = watchListing("description");
 
@@ -74,7 +77,7 @@ function Addlist() {
   const EmailValue = watchAgent("Email");
   const telNumValue = watchAgent("telNum");
 
-  // Regions & Cities fetch
+  // Regions & Cities fetch //  Regions & Cities fetch // Regions & Cities fetch // Regions & Cities fetch //
   const getRegions = async () => {
     try {
       const response = await instance.get("/regions");
@@ -121,21 +124,35 @@ function Addlist() {
     (city) => String(city.region_id) === String(selectedRegionId)
   );
 
-  // Image handlers
-  const handleFileChange = (e) => {
+  // agent Image handlers // agent Image handlers // agent Image handlers // agent Image handlers //
+  const handleAgentFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
-      setImageUrl(URL.createObjectURL(file));
+      setAgentImage(file);
+      setAgentImageUrl(URL.createObjectURL(file));
     }
   };
 
-  const handleRemoveImage = () => {
-    setImage(null);
-    setImageUrl("");
+  const handleAgentRemoveImage = () => {
+    setAgentImage(null);
+    setAgentImageUrl("");
   };
 
-  // Popup handlers
+  // Listing Image handlers //  Listing Image handlers // Listing Image handlers // Listing Image handlers //
+  const handleListingFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setListingImage(file);
+      setListingImageUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleListingRemoveImage = () => {
+    setListingImage(null);
+    setListingImageUrl("");
+  };
+
+  // Popup handlers // Popup handlers // Popup handlers // Popup handlers // Popup handlers // Popup handlers //
   function agent() {
     removeBtnRef.current.style.display = "block";
     blurOverlayRef.current.style.display = "block";
@@ -151,7 +168,7 @@ function Addlist() {
     blurOverlayRef.current.style.display = "none";
   }
 
-  // Agents fetch
+  // Agents fetch // Agents fetch // Agents fetch // Agents fetch // Agents fetch // Agents fetch //
   const fetchAgents = async () => {
     try {
       const response = await instance.get("/agents");
@@ -165,28 +182,34 @@ function Addlist() {
     fetchAgents();
   }, []);
 
-  // Add Listing
+  // Add Listing // Add Listing // Add Listing // Add Listing // Add Listing // Add Listing // Add Listing //
   const onSubmitListing = async (data) => {
     try {
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) =>
-        formData.append(key, value)
-      );
-      if (image) formData.append("avatar", image);
+      formData.append("is_rental", data.is_rental);
+      formData.append("address", data.address);
+      formData.append("zip_code", data.zip_code);
+      formData.append("region_id", data.region_id);
+      formData.append("city_id", data.city_id);
+      formData.append("price", data.price);
+      formData.append("area", data.area);
+      formData.append("bedrooms", data.bedrooms);
+      formData.append("description", data.description);
+      formData.append("agent_id", data.agent_id);
+      if (listingImage) formData.append("image", listingImage);
 
       await instance.post("/real-estates", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      console.log("Listing added successfully");
       navigate("/");
     } catch (error) {
-      console.error(
-        "Error adding listing:",
-        error.response?.data || error.message
-      );
+      console.error(error.response?.data || error.message);
     }
   };
 
-  // Add Agent
+  // Add Agent // Add Agent // Add Agent // Add Agent // Add Agent // Add Agent // Add Agent // Add Agent //
   const onSubmitAgent = async (data) => {
     try {
       const formData = new FormData();
@@ -194,7 +217,7 @@ function Addlist() {
       formData.append("surname", data.surname);
       formData.append("email", data.Email);
       formData.append("phone", data.telNum);
-      if (image) formData.append("image", image);
+      if (agentImage) formData.append("avatar", agentImage);
 
       await instance.post("/agents", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -207,14 +230,14 @@ function Addlist() {
     }
   };
 
-  // Reset city when region changes
+  // Reset city when region changes // Reset city when region changes // Reset city when region changes //
   useEffect(() => {
     if (selectedRegionId && watchListing("city_id")) {
       setValueListing("city_id", "");
     }
   }, [selectedRegionId]);
 
-  // ErrorMessage Component
+  // ErrorMessage Component // ErrorMessage Component // ErrorMessage Component // ErrorMessage Component //
   function ErrorMessage({ children }) {
     return (
       <p style={{ color: "red", fontSize: "14px", marginTop: "4px" }}>
@@ -235,11 +258,23 @@ function Addlist() {
             <label htmlFor="">გარიგების ტიპი</label>
             <div className="radio-container">
               <div className="radio-content">
-                <input type="radio" name="type" id="sell" />
+                <input
+                  type="radio"
+                  name="is_rental"
+                  id="sell"
+                  value="0"
+                  {...registerListing("is_rental", { required: true })}
+                />
                 <label htmlFor="sell">იყიდება</label>
               </div>
               <div className="radio-content">
-                <input type="radio" name="type" id="rent" />
+                <input
+                  type="radio"
+                  name="is_rental"
+                  id="rent"
+                  value="1"
+                  {...registerListing("is_rental", { required: true })}
+                />
                 <label htmlFor="rent">ქირავდება</label>
               </div>
             </div>
@@ -293,39 +328,39 @@ function Addlist() {
                 <label htmlFor="index">საფოსტო ინდექსი *</label>
                 <input
                   type="text"
-                  id="zip"
-                  {...registerListing("zip", {
+                  id="zip_code"
+                  {...registerListing("zip_code", {
                     required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
                     pattern: {
                       value: /^[0-9]+$/,
                       message: "✓ ჩაწერეთ მხოლოდ რიცხვები",
                     },
                   })}
-                  onFocus={() => setActiveInput("zip")}
+                  onFocus={() => setActiveInput("zip_code")}
                   onBlur={() => setActiveInput(null)}
                   style={{
                     border:
-                      zipValue.length === 0
+                      zip_codeValue.length === 0
                         ? "1.5px solid #021526"
-                        : errorsListing.zip
+                        : errorsListing.zip_code
                         ? "1.5px solid #F93B1D"
                         : "1.5px solid green",
                     outline:
-                      activeInput === "zip"
-                        ? zipValue.length === 0
+                      activeInput === "zip_code"
+                        ? zip_codeValue.length === 0
                           ? "1.5px solid #021526"
-                          : errorsListing.zip
+                          : errorsListing.zip_code
                           ? "1.5px solid #F93B1D"
                           : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
                 />
-                {zipValue.length === 0 ? (
+                {zip_codeValue.length === 0 ? (
                   <p style={{ color: "#021526" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
-                ) : errorsListing.zip ? (
+                ) : errorsListing.zip_code ? (
                   <p style={{ color: "#F93B1D" }}>
-                    {errorsListing.zip.message}
+                    {errorsListing.zip_code.message}
                   </p>
                 ) : (
                   <p style={{ color: "green" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
@@ -458,41 +493,43 @@ function Addlist() {
                 )}
               </div>
               <div className="detail-item">
-                <label htmlFor="m2">ფართობი m²</label>
+                <label htmlFor="area">ფართობი m²</label>
                 <input
                   type="number"
-                  id="m2"
-                  {...registerListing("m2", {
+                  id="area"
+                  {...registerListing("area", {
                     required: "✓ ჩაწერეთ მხოლოდ რიცხვები",
                     pattern: {
                       value: /^[0-9]+$/,
                       message: "✓ ჩაწერეთ მხოლოდ რიცხვები",
                     },
                   })}
-                  onFocus={() => setActiveInput("m2")}
+                  onFocus={() => setActiveInput("area")}
                   onBlur={() => setActiveInput(null)}
                   style={{
                     border:
-                      m2Value.length === 0
+                      areaValue.length === 0
                         ? "1.5px solid #021526"
-                        : errorsListing.m2
+                        : errorsListing.area
                         ? "1.5px solid #F93B1D"
                         : "1.5px solid green",
                     outline:
-                      activeInput === "m2"
-                        ? m2Value.length === 0
+                      activeInput === "area"
+                        ? areaValue.length === 0
                           ? "1.5px solid #021526"
-                          : errorsListing.m2
+                          : errorsListing.area
                           ? "1.5px solid #F93B1D"
                           : "1.5px solid green"
                         : "none",
                     padding: "2px",
                   }}
                 />
-                {m2Value.length === 0 ? (
+                {areaValue.length === 0 ? (
                   <p style={{ color: "#021526" }}>✓ ჩაწერეთ მხოლოდ რიცხვები </p>
-                ) : errorsListing.m2 ? (
-                  <p style={{ color: "#F93B1D" }}>{errorsListing.m2.message}</p>
+                ) : errorsListing.area ? (
+                  <p style={{ color: "#F93B1D" }}>
+                    {errorsListing.area.message}
+                  </p>
                 ) : (
                   <p style={{ color: "green" }}>✓ ჩაწერეთ მხოლოდ რიცხვები</p>
                 )}
@@ -586,11 +623,11 @@ function Addlist() {
             <div className="photos">
               <label
                 htmlFor="file-upload"
-                style={{ color: imageUrl ? "green" : "initial" }}
+                style={{ color: listingImageUrl ? "green" : "initial" }}
               >
                 ატვირთეთ ფოტო *
               </label>
-              {!imageUrl ? (
+              {!listingImageUrl ? (
                 <label className="custom-file-upload" htmlFor="file-upload">
                   <span className="plus">+</span>
                   <input
@@ -598,28 +635,28 @@ function Addlist() {
                     type="file"
                     accept="image/*"
                     style={{ display: "none" }}
-                    onChange={handleFileChange}
+                    onChange={handleListingFileChange}
                   />
                 </label>
               ) : (
                 <div
                   className="custom-file-upload"
                   style={{
-                    border: imageUrl
+                    border: listingImageUrl
                       ? "2px dashed green"
                       : "2px dashed #021526",
                   }}
                 >
                   <div className="image-preview-wrapper">
                     <img
-                      src={imageUrl}
+                      src={listingImageUrl}
                       alt="preview"
                       className="image-preview"
                     />
                     <button
                       type="button"
                       className="remove-image-btn"
-                      onClick={handleRemoveImage}
+                      onClick={handleListingRemoveImage}
                     >
                       <img src={trash} alt="trash" className="trash" />
                     </button>
@@ -628,31 +665,16 @@ function Addlist() {
               )}
             </div>
           </div>
-          <div className="list-btns">
-            <Link to="/">
-              <button className="cancel btn">გაუქმება</button>
-            </Link>
-            <button
-              className="add btn"
-              type="submit"
-              onClick={handleSubmitListing(onSubmitListing)}
-            >
-              დაამატე ლისტინგი
-            </button>
-          </div>
-        </form>
-      </div>
-      <form className="form" onSubmit={handleSubmitAgent(onSubmitAgent)}>
-        <div className="agent-container">
-          <h3>აგენტი</h3>
-          <p>აირჩიე</p>
+
+          <h3 className="agent-title">აგენტი</h3>
+          <p className="agent-list">აირჩიე</p>
+
           <div className="agent-select-box">
-            <select {...registerAgent("agent_id")}>
+            <select {...registerListing("agent_id", { required: true })}>
               <option value="">აირჩიე</option>
 
               {Array.isArray(agents) && agents.length > 0 ? (
                 agents.map((agent) => {
-                  console.log(agent); // ← ეს აქ ჩასვი
                   return (
                     <option key={agent.id} value={agent.id}>
                       {agent.name} {agent.surname}
@@ -664,6 +686,20 @@ function Addlist() {
               )}
             </select>
           </div>
+
+          <div className="list-btns">
+            <Link to="/">
+              <button className="cancel btn">გაუქმება</button>
+            </Link>
+            <button className="add btn" type="submit">
+              დაამატე ლისტინგი
+            </button>
+          </div>
+        </form>
+      </div>
+      {/* Agent Form */} {/* Agent Form */} {/* Agent Form */}
+      <form className="form" onSubmit={handleSubmitAgent(onSubmitAgent)}>
+        <div className="agent-container">
           <div className="add-agent-btn">
             <button type="button" ref={agentBtnRef} onClick={agent}>
               <img src={plusCircle} alt="" /> დაამატე აგენტი
@@ -867,11 +903,11 @@ function Addlist() {
               <div className="photos">
                 <label
                   htmlFor="file-upload"
-                  style={{ color: imageUrl ? "green" : "initial" }}
+                  style={{ color: agentImageUrl ? "green" : "initial" }}
                 >
                   ატვირთეთ ფოტო *
                 </label>
-                {!imageUrl ? (
+                {!agentImageUrl ? (
                   <label className="custom-file-upload" htmlFor="file-upload">
                     <span className="plus">+</span>
                     <input
@@ -879,28 +915,28 @@ function Addlist() {
                       type="file"
                       accept="image/*"
                       style={{ display: "none" }}
-                      onChange={handleFileChange}
+                      onChange={handleAgentFileChange}
                     />
                   </label>
                 ) : (
                   <div
                     className="custom-file-upload"
                     style={{
-                      border: imageUrl
+                      border: agentImageUrl
                         ? "2px dashed green"
                         : "2px dashed #021526",
                     }}
                   >
                     <div className="image-preview-wrapper">
                       <img
-                        src={imageUrl}
+                        src={agentImageUrl}
                         alt="preview"
                         className="image-preview"
                       />
                       <button
                         type="button"
                         className="remove-image-btn"
-                        onClick={handleRemoveImage}
+                        onClick={handleAgentRemoveImage}
                       >
                         <img src={trash} alt="trash" className="trash" />
                       </button>
