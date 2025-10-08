@@ -185,4 +185,73 @@
 .add-agent .form .agent-btns .agent-add-btn {
   background-color: #f93b1d;
   color: white;
+}
+
+.cards-container {
+  margin: 0 162px;
+}
+.cards-container .card {
+  width: 384px;
+  height: 455px;
+  box-shadow: 5px 5px 12px 0 rgba(2, 21, 38, 0.0784313725);
+  border-radius: 14px;
+}
+.cards-container .card .card-rental {
+  width: 90px;
+  height: 26px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  padding: 6px;
+  background-color: rgba(2, 21, 38, 0.5019607843);
+  text-align: center;
+  letter-spacing: 1px;
+  position: absolute;
+  z-index: 100;
+  top: 30%;
+  left: 9.5%;
+}
+.cards-container .card .card-img {
+  position: relative;
+  width: 384px;
+  height: 307px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  background-position: center;
+  border-top-right-radius: 14px;
+  border-top-left-radius: 14px;
+}
+.cards-container .card .card-info {
+  width: 384px;
+  height: 148px;
+  padding: 22px 25px;
+  border: 1px solid #dbdbdb;
+  border-top: none;
+  margin-top: -5px;
+  border-bottom-right-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+.cards-container .card .card-info .card-price {
+  font-size: 28px;
+  font-weight: 700;
+  color: #021526;
+}
+.cards-container .card .card-info .card-address {
+  margin-top: 7px;
+  color: rgba(2, 21, 38, 0.6980392157);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cards-container .card .card-info .card-details {
+  display: flex;
+  gap: 32px;
+  margin-top: 22px;
+  color: rgba(2, 21, 38, 0.6980392157);
+}
+.cards-container .card .card-info .card-details p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }/*# sourceMappingURL=MainPage.css.map */

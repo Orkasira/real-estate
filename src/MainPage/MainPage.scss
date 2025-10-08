@@ -184,3 +184,71 @@
     }
   }
 }
+
+.cards-container {
+  margin: 0 162px;
+  .card {
+    width: 384px;
+    height: 455px;
+    box-shadow: 5px 5px 12px 0 #02152614;
+    border-radius: 14px;
+    .card-rental {
+      width: 90px;
+      height: 26px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #ffffff;
+      padding: 6px;
+      background-color: #02152680;
+      text-align: center;
+      letter-spacing: 1px;
+      position: absolute;
+      z-index: 100;
+      top: 30%;
+      left: 9.5%;
+    }
+    .card-img {
+      position: relative;
+      width: 384px;
+      height: 307px;
+      object-fit: cover;
+      background-position: center;
+      border-top-right-radius: 14px;
+      border-top-left-radius: 14px;
+    }
+    .card-info {
+      width: 384px;
+      height: 148px;
+      padding: 22px 25px;
+      border: 1px solid #dbdbdb;
+      border-top: none;
+      margin-top: -5px;
+      border-bottom-right-radius: 14px;
+      border-bottom-left-radius: 14px;
+      .card-price {
+        font-size: 28px;
+        font-weight: 700;
+        color: #021526;
+      }
+      .card-address {
+        margin-top: 7px;
+        color: #021526b2;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .card-details {
+        display: flex;
+        gap: 32px;
+        margin-top: 22px;
+        color: #021526b2;
+        p {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,10 @@ import trash from "../assets/trash-2.png";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import area from "../assets/area.png";
+import bed from "../assets/bed.png";
+import location from "../assets/location.png";
+import zip from "../assets/zip.png";
 
 const TOKEN = "9f8e6802-4827-4091-8b26-0e0a42ad5423";
 export const instance = axios.create({
@@ -431,16 +435,31 @@ function MainPage() {
           </div>
         </form>
       </div>
+
       <div className="cards-container">
         {posts.map((item) => (
           <div className="card" key={item.id}>
+            <p className="card-rental">ქირავდება</p>
             <img src={item.image} alt={item.address} className="card-img" />
             <div className="card-info">
               <h3 className="card-price">{item.price} ₾</h3>
-              <p className="card-address">{item.address}</p>
+              <p className="card-address">
+                <img src={location} alt="location icon" />
+                {item.address}
+              </p>
               <div className="card-details">
-                <p>ფართობი: {item.area} მ²</p>
-                <p>საძინებელი: {item.bedrooms}</p>
+                <p>
+                  <img src={bed} alt="bedrooms icon" />
+                  {item.bedrooms}
+                </p>
+                <p>
+                  <img src={area} alt="area icon" />
+                  {item.area} მ²
+                </p>
+                <p>
+                  <img src={zip} alt="zip code icon" />
+                  {item.zip_code}
+                </p>
               </div>
             </div>
           </div>
