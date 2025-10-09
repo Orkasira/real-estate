@@ -188,13 +188,17 @@
 }
 
 .cards-container {
-  margin: 0 162px;
+  margin: 0 154px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 .cards-container .card {
   width: 384px;
   height: 455px;
   box-shadow: 5px 5px 12px 0 rgba(2, 21, 38, 0.0784313725);
   border-radius: 14px;
+  position: relative;
 }
 .cards-container .card .card-rental {
   width: 90px;
@@ -209,11 +213,10 @@
   letter-spacing: 1px;
   position: absolute;
   z-index: 100;
-  top: 30%;
-  left: 9.5%;
+  top: 5%;
+  left: 5%;
 }
 .cards-container .card .card-img {
-  position: relative;
   width: 384px;
   height: 307px;
   -o-object-fit: cover;

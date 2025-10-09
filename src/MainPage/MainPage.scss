@@ -186,12 +186,16 @@
 }
 
 .cards-container {
-  margin: 0 162px;
+  margin: 0 154px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
   .card {
     width: 384px;
     height: 455px;
     box-shadow: 5px 5px 12px 0 #02152614;
     border-radius: 14px;
+    position: relative;
     .card-rental {
       width: 90px;
       height: 26px;
@@ -205,11 +209,10 @@
       letter-spacing: 1px;
       position: absolute;
       z-index: 100;
-      top: 30%;
-      left: 9.5%;
+      top: 5%;
+      left: 5%;
     }
     .card-img {
-      position: relative;
       width: 384px;
       height: 307px;
       object-fit: cover;

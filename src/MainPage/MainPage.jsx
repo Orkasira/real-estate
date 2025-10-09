@@ -29,8 +29,9 @@ function MainPage() {
   const blurOverlayRef = useRef(null);
   const [posts, setPosts] = useState([]);
   const [activeInput, setActiveInput] = useState(null);
+  const [isRental, setIsRental] = useState(null);
 
-  //  img add and remove in agent
+  //  img add and remove in agent // img add and remove in agent // img add and remove in agent // img add and remove in agent //
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -44,7 +45,7 @@ function MainPage() {
     setImageUrl("");
   };
 
-  // agent add and remove
+  // agent add and remove // agent add and remove // agent add and remove // agent add and remove // agent add and remove // agent add and remove //
 
   function agent() {
     removeBtnRef.current.style.display = "block";
@@ -61,7 +62,7 @@ function MainPage() {
     blurOverlayRef.current.style.display = "none";
   }
 
-  // axios api
+  // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api //
 
   const getPosts = async () => {
     try {
@@ -77,7 +78,7 @@ function MainPage() {
     getPosts();
   }, []);
 
-  // form validation
+  // form validation // form validation // form validation // form validation // form validation // form validation // form validation //
 
   const {
     register,
@@ -132,7 +133,7 @@ function MainPage() {
 
   console.log(errors);
 
-  //  filter on click
+  //  filter on click // filter on click // filter on click // filter on click // filter on click // filter on click //
 
   function handleFilterClick1(filter) {
     console.log("რეგიონი");
@@ -439,7 +440,9 @@ function MainPage() {
       <div className="cards-container">
         {posts.map((item) => (
           <div className="card" key={item.id}>
-            <p className="card-rental">ქირავდება</p>
+            <p className="card-rental">
+              {item.is_rental ? "ქირავდება" : "იყიდება"}
+            </p>
             <img src={item.image} alt={item.address} className="card-img" />
             <div className="card-info">
               <h3 className="card-price">{item.price} ₾</h3>
