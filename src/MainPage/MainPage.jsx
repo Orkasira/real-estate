@@ -31,7 +31,7 @@ function MainPage() {
   const [activeInput, setActiveInput] = useState(null);
   const [isRental, setIsRental] = useState(null);
 
-  //  img add and remove in agent // img add and remove in agent // img add and remove in agent // img add and remove in agent //
+  //  img add and remove in agent // img add and remove in agent // img add and remove in agent // img add and remove in agent 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -45,7 +45,7 @@ function MainPage() {
     setImageUrl("");
   };
 
-  // agent add and remove // agent add and remove // agent add and remove // agent add and remove // agent add and remove // agent add and remove //
+  // agent add and remove // agent add and remove // agent add and remove // agent add and remove // agent add and remove // agent add and remove 
 
   function agent() {
     removeBtnRef.current.style.display = "block";
@@ -62,7 +62,7 @@ function MainPage() {
     blurOverlayRef.current.style.display = "none";
   }
 
-  // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api //
+  // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api // axios api 
 
   const getPosts = async () => {
     try {
@@ -78,7 +78,7 @@ function MainPage() {
     getPosts();
   }, []);
 
-  // form validation // form validation // form validation // form validation // form validation // form validation // form validation //
+  // form validation // form validation // form validation // form validation // form validation // form validation // form validation 
 
   const {
     register,
@@ -133,7 +133,7 @@ function MainPage() {
 
   console.log(errors);
 
-  //  filter on click // filter on click // filter on click // filter on click // filter on click // filter on click //
+  //  filter on click // filter on click // filter on click // filter on click // filter on click // filter on click 
 
   function handleFilterClick1(filter) {
     console.log("რეგიონი");
